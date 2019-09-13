@@ -3,6 +3,16 @@ import { NgModule, LOCALE_ID, APP_INITIALIZER, Injector } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReuseTabService, ReuseTabStrategy } from '@delon/abc/reuse-tab';
+import { RouteReuseStrategy } from '@angular/router';
+
+const REUSETAB_PROVIDES = [
+  {
+    provide: RouteReuseStrategy,
+    useClass: ReuseTabStrategy,
+    deps: [ReuseTabService],
+  },
+];
 
 // #region default language
 // Reference: https://ng-alain.com/docs/i18n
@@ -35,13 +45,13 @@ export function I18nHttpLoaderFactory(http: HttpClient) {
 }
 
 const I18NSERVICE_MODULES = [
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: I18nHttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+  TranslateModule.forRoot({
+    loader: {
+      provide: TranslateLoader,
+      useFactory: I18nHttpLoaderFactory,
+      deps: [HttpClient]
+    }
+  })
 ];
 
 const I18NSERVICE_PROVIDES = [
@@ -51,7 +61,7 @@ const I18NSERVICE_PROVIDES = [
 
 // #region JSON Schema form (using @delon/form)
 import { JsonSchemaModule } from '@shared/json-schema/json-schema.module';
-const FORM_MODULES = [ JsonSchemaModule ];
+const FORM_MODULES = [JsonSchemaModule];
 // #endregion
 
 
@@ -60,8 +70,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SimpleInterceptor } from '@delon/auth';
 import { DefaultInterceptor } from '@core/net/default.interceptor';
 const INTERCEPTOR_PROVIDES = [
-  { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true},
-  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true}
+  { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true }
 ];
 // #endregion
 
@@ -93,6 +103,7 @@ import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -114,7 +125,8 @@ import { LayoutModule } from './layout/layout.module';
     ...LANG_PROVIDES,
     ...INTERCEPTOR_PROVIDES,
     ...I18NSERVICE_PROVIDES,
-    ...APPINIT_PROVIDES
+    ...APPINIT_PROVIDES,
+    ...REUSETAB_PROVIDES
   ],
   bootstrap: [AppComponent]
 })

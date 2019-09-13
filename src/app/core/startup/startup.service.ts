@@ -40,8 +40,8 @@ export class StartupService {
       this.httpClient.get('assets/tmp/app-data.json')
     ).pipe(
       catchError(([langData, appData]) => {
-          resolve(null);
-          return [langData, appData];
+        resolve(null);
+        return [langData, appData];
       })
     ).subscribe(([langData, appData]) => {
       // Setting language data
@@ -61,12 +61,12 @@ export class StartupService {
       // Can be set page suffix title, https://ng-alain.com/theme/title
       this.titleService.suffix = res.app.name;
     },
-    () => { },
-    () => {
-      resolve(null);
-    });
+      () => { },
+      () => {
+        resolve(null);
+      });
   }
-  
+
   private viaMockI18n(resolve: any, reject: any) {
     this.httpClient
       .get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`)
@@ -77,7 +77,7 @@ export class StartupService {
         this.viaMock(resolve, reject);
       });
   }
-  
+
   private viaMock(resolve: any, reject: any) {
     // const tokenData = this.tokenService.get();
     // if (!tokenData.token) {
@@ -115,6 +115,12 @@ export class StartupService {
           },
           {
             text: 'Quick Menu',
+            icon: { type: 'icon', value: 'rocket' },
+            shortcutRoot: true
+          },
+          {
+            text: 'sdk list',
+            link: '/sdk/list',
             icon: { type: 'icon', value: 'rocket' },
             shortcutRoot: true
           }

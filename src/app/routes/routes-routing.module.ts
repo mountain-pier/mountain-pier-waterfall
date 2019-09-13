@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SimpleGuard } from '@delon/auth';
 import { environment } from '@env/environment';
+import { SdkModule } from './sdk/sdk.module'
 // layout
 import { LayoutDefaultComponent } from '../layout/default/default.component';
 import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.component';
@@ -54,13 +55,14 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    SdkModule,
     RouterModule.forRoot(
       routes, {
-        useHash: environment.useHash,
-        // NOTICE: If you use `reuse-tab` component and turn on keepingScroll you can set to `disabled`
-        // Pls refer to https://ng-alain.com/components/reuse-tab
-        scrollPositionRestoration: 'top',
-      }
+      useHash: environment.useHash,
+      // NOTICE: If you use `reuse-tab` component and turn on keepingScroll you can set to `disabled`
+      // Pls refer to https://ng-alain.com/components/reuse-tab
+      scrollPositionRestoration: 'top',
+    }
     )],
   exports: [RouterModule],
 })
